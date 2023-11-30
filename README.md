@@ -2,9 +2,10 @@
 
 ## Carpetas y archivos
 
-* `linux/` - Contiene archivos que **no** pertenecen a DOS, por lo que no se recomienda acceder a dicha carpeta ni modificar los archivos dentro de ella.
+* `docs` - Contiene libros, apuntes y material.
 * `mount/` - Carpeta que se monta como unidad `C:` y contiene todo lo necesario para trabajar desde DOS.
-* `launch.sh` -  Script Bash que lanza DOSBox utilizando una configuración personalizada en la carpeta local. Es el único archivo que no pertenece a DOS que se encuentra fuera de la carpeta `linux` junto con README.md
+* `dosbox.conf` - Archivo de configuración personalizado para DOSBox (utilizado por `launch.sh` para lanzar siempre un entorno consistente en distintos equipos)
+* `launch.sh` -  Script Bash que lanza DOSBox utilizando la configuración personalizada.
 
 ## Cómo usar
 
