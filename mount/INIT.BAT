@@ -1,0 +1,3 @@
+@echo off
+set path=C:\DOS;C:\NC;C:\BCPP30\BIN;C:\MASM611\BIN;C:\TP\BIN;C:\TC\BIN;C:\TASM\BIN;C:\QB45%PATH%;
+

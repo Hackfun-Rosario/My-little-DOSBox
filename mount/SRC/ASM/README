@@ -1,0 +1,7 @@
+Compilar con Macro Assembler mediante:
+
+ML HELLO.ASM
+
+El archivo de salida es de tipo COM.
+
+
