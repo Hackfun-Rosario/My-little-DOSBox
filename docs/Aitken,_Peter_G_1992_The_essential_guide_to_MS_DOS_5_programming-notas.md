@@ -160,4 +160,101 @@ MS-DOS includes only one service—Int 21H Function OAH—that reads a single li
 
 ### Checking input status
 
-At times, you might want to find out whether a character is available in the buffer of the input device yet not want to remove the character from the buffer. You can do so by using Int 21H Function OBH.
+At times, you might want to **find out whether a character is available in the buffer** of the input device yet **not want to remove the character from the buffer**. You can do so by using **Int 21H Function OBH**.
+
+This service **does not wait for a character to be input** but instead **returns immediately** to the calling program, letting it know whether a character is in the buffer. You can use this service to implement a **simple form of multitasking**. By using Int 21H Function OBH, you can **check for a character** and, when **a character is available, process it**. **Other wise, the program can be doing other tasks**.
+
+### Flushing the Input Buffer
+
+When a program is querying the user about an important task you don't want an old keystroke left over in the buffer to be misinterpreted as the response. You should **empty the buffer first** to ensure that the program gets the correct response—the one that was **entered after the program's prompt**.
+
+**Int 21H Function OCH flushes the input buffer** and then **calls one of the input services**.
+
+### The Keyboard Flags
+
+The **ROM BIOS** maintains a **set of keyboard flags** that reflect the **status of the Ctrl, Shift, Alt, and "lock" keys**.
+
+The BIOS uses the keyboard flags when processing keystrokes because **the keyboard scan codes do not take into account whether any of these special keys are pressed**.
+
+Your program can **read the keyboard flags** by calling Int **16H Function 02H** or **Int 16H Function 12H**. The difference between these two services is that Function 02H works with all keyboards, but Function 12H works only with enhanced keyboards.
+
+## Keyboard Service Reference (p.74)
+
+(Ver tablas en el libro)
+
+# Chapter 6 - Mouse programming (p.83)
+
+(TODO)
+
+# Chapter 7 - Screen Display (p.153)
+
+### Screens, Pixels, and Video Adapters
+
+All PC display adapters are **memory mapped**, which means that they have a **section of random access memory** (RAM) that is **devoted to the screen display**. This memory has various names: **video RAM**, **video buffer**, **refresh buffer**, and **display buffer**.
+
+Dedicated hardware on the display adapter **scans the video RAM continually** and **converts the data in the memory into the appropriate pixel pattern**, which it then **sends to the monitor**. To display an image, therefore, a program must write the appropriate data to video RAM.
+
+### Text modes
+
+In text modes, the screen is divided into a **matrix of character cells**. Most display adapters offer two text modes: one with a matrix of **40 columns by 25 rows** and the other (the default) with a matrix of **80 columns by 25 rows**.
+
+Each cell is identified by its row and column coordinates; **the coordinates of the upper left cell are (0, 0)**. On a screen that has 80 columns by 25 rows, therefore, the coordinates of the lower right cell are (79, 24).
+
+In text modes, each character cell on the screen is represented by **2 adjacent bytes** of memory in video RAM. **The first**, or low-order, byte specifies **the character to display**. **The second byte**, called the **attribute byte**, specifies the attributes—how the character is displayed. Bit fields in the attribute byte control such aspects as **color and intensity**.
+
+![](/home/user/DOS/docs/img/char-attrib.png)
+
+(Más tablas de atributos en p.157)
+
+### Graphics modes
+
+In graphics modes your program has **control over each individual pixel on the screen**.
+
+As with text modes, a **graphics mode screen display is memory mapped**. Each pixel on the screen is controlled by the contents of **one or more bits in video RAM**. How many pixels and colors are available on the screen **depends on the display adapter** and the **screen display mode** being used.
+
+![](/home/user/DOS/docs/img/display-modes.png)
+
+You can **set the current display mode** using the service **Int 10H Function OOH**. To **read the current display mode**, use **Int 10H Function OFH**.
+
+### Display pages
+
+Most display adapters have **more installed video RAM than is needed** to hold a full screen of information. The video RAM, therefore, is **divided into a number of display pages**, each of which can hold the data required for a full screen display. The number of pages available depends on the display adapter and the current display mode.
+
+At any given moment, **the screen displays the data in a single display page**, called the **active display page**. By default, this is **display page 0**. Your program can **change the active display** page by calling **Int 10H Function 05H**.
+
+When you change display pages, the screen **switches immediately** to display the data in the newly active page.
+
+To determine **which display page is active**, use **Int 10H Function OFH**.
+
+Your program can **write text to an inactive display page** without affecting the active display and then **display the new text immediately** by calling **Int 10H Function 05H**.
+
+### Cursor Control in Text Mode Display Pages
+
+**Every text mode display page has a cursor**. 
+
+Note that **a cursor exists for every valid display page**, even when that page is **not the active one**. You can **modify the location** of the cursor on **inactive display pages**, but **you cannot modify the cursor's appearance**.
+
+To **modify the appearance** of the cursor on the **active display page**, use **Int 10H Function OIH**. You can change **only the rectangular cursor's size and its position** in the character cell. You do this by specifying the **start and stop scan lines** that the cursor uses. A character cell contains a certain number of scan lines: The top scan line is number 0, and the bottom scan line is number 7. If you specified 6 for the start scan line and 7 for the stop scan line, the cursor would be an underline character.
+
+To **change the position** of the cursor on any display page, use **Int 10H Function 02H**. To **get the position** and scan lines of the cursor on any display page, use **Int 10H Function 03H**.
+
+## Screen Output Using MS-DOS and BIOS Display Services
+When using **operating system services** to **write text to the screen** display, you have **two choices**. 
+
+The **MS-DOS display services**, which you access via **Int 21H**, operate correctly on **any system that runs MS-DOS**, regardless of the level of IBM hardware compatibility. These services, however, execute **relatively slowly**.
+
+The **BIOS display services**, which you access via **Int 10H**, are **much more efficient** than the MS-DOS services. They do, however, **require IBM hardware compatibility**.
+
+Note that the **MS-DOS display services do not let you control the value of the attribute byte**. If output goes to the screen (it is not redirected), the text is **displayed using whatever attributes the corresponding character cells already have**. In contrast, **some of the BIOS display services provide control of the attribute byte**.
+
+After an **MS-DOS service** displays one or more characters, the screen cursor is **positioned immediately after the last character**. When the output **reaches the right edge of the screen**, it **wraps to the start of the next line**. In most cases, the **BIOS display services** provide **no cursor updating**—your program must update the cursor position explicitly.
+
+### MS-DOS display services
+
+To use **MS-DOS services** to display a string of one or more characters on the screen, use **Int 21H Function 40H**. This is one of MS-DOS's **handle services**.
+
+A **handle** is a **numeric identifier** that MS-DOS assigns to an **input or output** (I/O) **device**. MS-DOS can associate a handle with a disk file, the keyboard, a serial port, the display screen, and so on.
+
+**When a program runs**, MS-DOS assigns handles for the **standard devices**. **Standard output** (stdout) is assigned **handle 1**, and **standard error** (stderr) is assigned **handle 2**.
+
+**Standard output can be redirected** and is by default **the screen**. **Standard error cannot be redirected** and is **always the screen**.
