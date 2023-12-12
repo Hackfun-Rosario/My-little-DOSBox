@@ -114,3 +114,50 @@ One of the **main purposes of interrupts** is to allow the CPU to **respond to e
 
 
 
+# Chapter 5: The Keyboard (p.41)
+
+## Keyboard basics
+
+When you **press a key**, the keyboard generates a **unique 1-byte scan code** that identifies the key. **Bit 7** (the leftmost bit) of the scan code **is always 0**. 
+
+When you release the key another unique scan code is generated. For any key, the **release scan** code is the press **scan code with bit 7 set to 1**.
+
+In addition to the corresponding scan code, the keyboard also generates a **call to Int 09H** (the keyboard interrupt) **each time the user presses or releases a key**. Execution passes to the ROM BIOS keyboard interrupt service routine, which reads the scan code from the keyboard.
+
+![](/home/user/DOS/docs/img/keycodes.png)
+
+​               ^--- ¿Códigos correctos?
+
+## Keyboard Input
+When using MS-DOS services for keyboard input, you have a choice between the **Int 21H DOS kernel services** and the Int **16H BIOS services**. The main difference between these two groups is that the **Int 21H services are sensitive to input redirection and the Int 16H services are not**.
+
+### Ctrl-C and Ctrl-Break
+
+When you press **Ctrl-C**, 03H (**the ASCII code for Ctrl-C**) **is placed in the keyboard buffer** like any other character. When MS-DOS reads Ctrl-C from the buffer, it **calls Int 23H**. The **default handler** for Int 23H **terminates the active process and returns control** to the parent process—usually, the program then terminates, and the MS-DOS prompt returns.
+
+Strictly speaking, the response to a Ctrl-Break (or Ctrl-C) keystroke is **not always immediate**. MS-DOS maintains a **break flag** for which the **default setting is 0**, which means that MS-**DOS checks for a Ctrl-Break only during certain input/output (I/O) operations**. If you use C or Basic I/O functions or statements when the break flag is set to 0, Ctrl-Break is detected only when your program does either of the following:
+• Sends data to the screen, printer, or communications port
+• Reads data from the keyboard or communications port
+**If the break flag is set to 1**, MS-DOS checks for a Ctrl-Break **every time an MS-DOS service is called**—including not only the I/O operations mentioned above but also disk operations, memory allocation, and so on. With the break flag set, therefore, users are able to interrupt a program's operation more readily by pressing Ctrl-Break (for example, if execution becomes stuck in a program loop that doesn't involve any I/O operations).
+
+### Int 21H character input services
+
+You can access **four character input services** via **Int 21H**:
+
+![](/home/user/DOS/docs/img/char-input.png)
+
+When using any of these four MS-DOS input services, keep in mind that **these services all return the corresponding ASCIIvalue for standard characters**. If the user has entered an **extended character** (for example, a function key or an Alt-[letter] key combination), the services **return the value 0**. You must then **read the next character in the keyboard buffer** to obtain the extended character's scan code.
+
+### Int 16H Function 00H—BIOS character input
+
+Because **Int 16H Function 00H** is **not sensitive to redirection** of input, using it for character input means that **input will come from the keyboard at all times**. You can use this service to ensure that responses to error messages come from the user.
+
+Int 16H Function 00H has this advantage: **With a single call, it returns both the ASCII character code and the scan code**. This capability enables the program to **read extended keys using a single call**, rather than the two calls required with the Int 21H character input services.
+
+### Line input
+
+MS-DOS includes only one service—Int 21H Function OAH—that reads a single line of input from stdin and places it in a user-defined buffer. This service is not used often because it lacks flexibility. For example, it does not enablea program to respond to an extended key while a line is being input.
+
+### Checking input status
+
+At times, you might want to find out whether a character is available in the buffer of the input device yet not want to remove the character from the buffer. You can do so by using Int 21H Function OBH.
