@@ -49,8 +49,8 @@ begin
    FillChar (Mem [$a000:0],64000,0);
 
    { Dibuja unos pixeles locos }
-   for i:= 1 to 320 do
-      for j:= 1 to 200 do
+   for i:= 0 to 319 do
+      for j:= 0 to 199 do
          { INTPutpixel(i,j,i); }
          MEMPutpixel(i,j,i);
 
