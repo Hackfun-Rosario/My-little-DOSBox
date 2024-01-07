@@ -32,7 +32,7 @@ BEGIN
 END;
 
 begin
-   { Cambia a modo CGA }
+   { Cambia a modo MCGA }
    SetMCGA;
 
    { Pinta toda la pantalla de un color }
