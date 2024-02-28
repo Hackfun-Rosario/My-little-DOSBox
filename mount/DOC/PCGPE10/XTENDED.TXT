@@ -1,19 +1,19 @@
 
-                 ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-                 ³ Xtended Mode - Unchained 640x400x256 ³
-                 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+		 ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		 ³ Xtended Mode - Unchained 640x400x256 ³
+		 ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
-                 Written for the PC-GPE by Mark Feldman
-            e-mail address : u914097@student.canberra.edu.au
-                             myndale@cairo.anu.edu.au
+		 Written for the PC-GPE by Mark Feldman
+	    e-mail address : u914097@student.canberra.edu.au
+			     myndale@cairo.anu.edu.au
 
-                    Please read the file SVGINTRO.TXT
-                (Graphics/SVGA/Intro PC-GPE menu option)
+		    Please read the file SVGINTRO.TXT
+		(Graphics/SVGA/Intro PC-GPE menu option)
 
-               ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-               ³      THIS FILE MAY NOT BE DISTRIBUTED     ³
-               ³ SEPARATE TO THE ENTIRE PC-GPE COLLECTION. ³
-               ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+	       ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	       ³      THIS FILE MAY NOT BE DISTRIBUTED     ³
+	       ³ SEPARATE TO THE ENTIRE PC-GPE COLLECTION. ³
+	       ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 
 ÚÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -51,18 +51,18 @@ instead of mode 13h. The 640x400x256 mode number varies from card to card.
 The following table lists the mode number for each of the 7 "standard"
 SVGAs:
 
-           640x400x256 mode numbers for various SVGA cards
-               ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-               ³      SVGA Chip          Mode Number ³
-               ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-               ³ ATI                        61h      ³
-               ³ Chips & Technologies       78h      ³
-               ³ Genoa                      7Eh      ³
-               ³ Paradise                   5Eh      ³
-               ³ Trident                    5Ch      ³
-               ³ Tseng                      2Fh      ³
-               ³ Video 7                    66h      ³
-               ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+	   640x400x256 mode numbers for various SVGA cards
+	       ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	       ³      SVGA Chip          Mode Number ³
+	       ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
+	       ³ ATI                        61h      ³
+	       ³ Chips & Technologies       78h      ³
+	       ³ Genoa                      7Eh      ³
+	       ³ Paradise                   5Eh      ³
+	       ³ Trident                    5Ch      ³
+	       ³ Tseng                      2Fh      ³
+	       ³ Video 7                    66h      ³
+	       ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 Alternatively the mode can be set with the VESA Set Super VGA Mode BIOS
 call, the VESA SVGA mode number is 100h. Refer to the file "VESASP12.TXT"
@@ -72,8 +72,8 @@ The following Pascal procedure will set Xtended mode for a card with a VESA
 driver:
 
 const VIDEO     = $10;  { Video interrupt number                    }
-      CRTC_ADDR	= $3d4; { Base port of the CRT Controller (color)   }
-      SEQU_ADDR	= $3c4; { Base port of the Sequencer                }
+      CRTC_ADDR = $3d4; { Base port of the CRT Controller (color)   }
+      SEQU_ADDR = $3c4; { Base port of the Sequencer                }
 
 procedure InitXtended;
 begin
