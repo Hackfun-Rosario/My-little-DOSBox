@@ -5,7 +5,7 @@ title SBPLAY (SBPLAY.ASM)
 
 SBPORT          EQU 220h
 BASE_FREQ       EQU 1193182     ; PIT 8253 input clock
-COUNT           EQU 148         ; (BASE_FREQ / 8000) and 0FFFEh 
+COUNT           EQU 150         ; (BASE_FREQ / 8000) and 0FFFEh 
 BUFSIZE         EQU 160
 
 .code
@@ -253,10 +253,9 @@ msg_success     db      "OK", '$'
 msg_error       db      "KO", '$'
 
 ticks           dw      0
-playing         db      1
 
 datastart       EQU     $   
-include         wow.inc        ; Up to 64KB of 8 kHz 8-bit unsigned LPCM
+include         wow.inc ; Up to 64KB of 8 kHz 8-bit unsigned PCM
 dataend         EQU     $
 datasize        EQU     dataend - datastart
 
